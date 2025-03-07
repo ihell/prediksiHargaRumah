@@ -27,6 +27,10 @@ def train_and_save_model(model_path=MODEL_PATH, retrain=False):
     
     logging.info("Memuat dan memproses data...")
     X_train, X_test, y_train, y_test, _ = load_and_preprocess_data()
+    
+    if X_train is None:
+        logging.error("Gagal memuat dan memproses data. Pastikan file CSV ada di path yang benar.")
+        return
 
     logging.info("Melatih model Linear Regression...")
     model = LinearRegression()

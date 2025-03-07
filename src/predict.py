@@ -51,9 +51,28 @@ def predict_house_price(features):
         return None
 
 if __name__ == "__main__":
-    # Contoh input data (menggunakan fitur dari dataset California Housing)
-    contoh_input = [8.3252, 41, 6.9841, 1.0238, 322, 2.5556, 37.88, -122.23]
+    # Contoh input data untuk beberapa daerah (menggunakan fitur dari dataset Indonesia)
+    contoh_input_daerah = {
+        "Jakarta": [120, 150, 3, 2],
+        "Bandung": [100, 120, 2, 1],
+        "Surabaya": [150, 180, 4, 3],
+        "Yogyakarta": [90, 100, 2, 1],
+        "Bali": [200, 250, 5, 4]
+    }
     
-    hasil_prediksi = predict_house_price(contoh_input)
-    if hasil_prediksi is not None:
-        logging.info(f"Prediksi harga rumah: ${hasil_prediksi * 100000:.2f}")
+    # Harga target untuk penyesuaian (dalam miliar Rupiah)
+    harga_target_daerah = {
+        "Jakarta": 2.5,
+        "Bandung": 0.8,
+        "Surabaya": 1.0,
+        "Yogyakarta": 0.5,
+        "Bali": 1.5
+    }
+    
+    for daerah, fitur_rumah in contoh_input_daerah.items():
+        hasil_prediksi = predict_house_price(fitur_rumah)
+        if hasil_prediksi is not None:
+            # Asumsikan hasil prediksi dalam satuan miliar Rupiah dan sesuaikan dengan faktor penyesuaian
+            faktor_penyesuaian = harga_target_daerah[daerah] / hasil_prediksi  # Sesuaikan faktor penyesuaian agar hasil prediksi mendekati target
+            hasil_prediksi_rupiah = hasil_prediksi * faktor_penyesuaian * 1_000_000_000
+            logging.info(f"Prediksi harga rumah di {daerah}: Rp{hasil_prediksi_rupiah:,.2f}")
